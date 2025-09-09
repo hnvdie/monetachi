@@ -1,7 +1,4 @@
-# Monetachi ¥
-
 from datetime import datetime
-
 import socket
 import board
 import busio
@@ -12,41 +9,37 @@ import time
 
 currency_symbols = {"usd":"$","idr":"Rp","jpy":"¥","eur":"€"}
 
-def token_value(token_id, amount, currency="usd"):
-    symbol = currency_symbols.get(currency.lower(), "")
-    url = f"https://api.coingecko.com/api/v3/simple/price?ids={token_id}&vs_currencies={currency}"
+def token_value(token_id, amount, target_currency="usd"):
+    url = f"https://api.coingecko.com/api/v3/simple/price?ids={token_id}&vs_currencies={target_currency}"
     try:
         response = requests.get(url, timeout=5).json()
-        price = response[token_id][currency.lower()]
+        price = response[token_id][target_currency.lower()]
     except:
         price = 0
     total_value = amount * price
+    symbol = currency_symbols.get(target_currency.lower(), "")
     total_value_fmt = f"{symbol}{total_value:,.0f}"
-    #custom display token name
-    if token_id.upper() == "SHIBA-INU":
-       token_id = "shiba"
+    
+    # custom token name
+    if token_id.lower() == "shiba-inu":
+        token_id = "shiba"
 
-    return f"{token_id.capitalize()} value: {total_value_fmt}"
+    return token_id.capitalize(), total_value, total_value_fmt
 
 def wallet_info(default_currency="jpy"):
+    #example
     tokens = [
-        ("shiba-inu", 50_50_50.4, "jpy"),
-        ("doge", 55, "jpy"),
-        ("bitcoin", 0.03, "jpy")
+        ("shiba-inu", 50),
+        ("doge", 50),
+        ("tether", 50)
     ]
 
     lines = []
     total = 0
-    for token_id, amount, currency in tokens:
-        line = token_value(token_id, amount, currency)
-        lines.append(line)
-        symbol = currency_symbols.get(currency.lower(), "")
-        # ambil numeric value dari string
-        value_str = line.split(symbol)[1].replace(",","")
-        try:
-            total += float(value_str)
-        except:
-            pass
+    for token_id, amount in tokens:
+        name, value, value_fmt = token_value(token_id, amount, default_currency)
+        lines.append(f"{name} value: {value_fmt}")
+        total += value
 
     symbol = currency_symbols.get(default_currency.lower(), "")
     lines.append(f"Networth: {symbol}{total:,.0f}")
@@ -67,13 +60,12 @@ i2c = busio.I2C(board.SCL, board.SDA)
 oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c)
 oled.fill(0)
 oled.show()
-font = ImageFont.truetype("ubuntu.ttf", 13)
+font_path = "ubuntu.ttf"
 
 last_fetch = 0
 wallet_lines = []
 
 while True:
-    # set update data here, like 1H, 30m, etc.
     if time.time() - last_fetch > 3600:
         wallet_lines = wallet_info()
         last_fetch = time.time()
@@ -82,7 +74,13 @@ while True:
     messages = [f"Host: {ip}"] + wallet_lines
 
     for msg in messages:
+        font_size = 13
+        font = ImageFont.truetype(font_path, font_size)
         w, h = font.getsize(msg)
+        while w > oled.width - 4 and font_size > 6:  # padding 2px
+            font_size -= 1
+            font = ImageFont.truetype(font_path, font_size)
+            w, h = font.getsize(msg)
         x = (oled.width - w) // 2
         y = (oled.height - h) // 2
 
