@@ -60,9 +60,9 @@ Tokens
 Modify `wallet_info()` to add/remove tokens:
 ```python
 tokens = [
-    ("shiba-inu", 0.1, "jpy"),
-    ("doge", 0.5, "jpy"),
-    ("bitcoin", 0.001, "jpy")
+    ("shiba-inu", 5),
+    ("doge", 5),
+    ("tehter", 10)
 ]
 ```
 
