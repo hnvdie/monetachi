@@ -121,7 +121,11 @@ crontab -e
 ---
 
 ## API & Credits | Contribution
+
+![Images](https://c.tenor.com/Jjzn8XGSE9MAAAAd/tenor.gif)
+
 Wallet data is fetched from the [CoinGecko API](https://www.coingecko.com/en/api). Thanks to CoinGecko for providing free crypto price data.
+
 Contributions are very welcome! Feel free to open a pull request ❤️
 
 ---
