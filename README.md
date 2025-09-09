@@ -93,22 +93,34 @@ Default currency is jpy, change default_currency in `wallet_info()` if needed.
 
 ---
 
-Running
+Make sure your Raspberry Pi is connected to the internet before running.
+
 ```bash
-python3 Monetachi.py
+python3 monetachi.py
 ```
-OLED continuously shows IP and wallet info
 
-Wallet data updates automatically based on configured interval
+- OLED displays IP and wallet info continuously  
+- Wallet data updates automatically at the configured interval  
+- Fade effect simulated for monochrome displays  
 
-Fade effect simulated for monochrome displays
+---
 
+Run in Background or on Startup
 
+nohup:
+```bash
+nohup python3 /home/pi/monetachi.py > /dev/null 2>&1 &
+```
+
+crontab:
+```bash
+crontab -e
+# add this line:
+@reboot nohup python3 /home/pi/monetachi.py > /dev/null 2>&1 &
+```
 
 ---
 ## API & Credits | Contribution
 Wallet data is fetched from the [CoinGecko API](https://www.coingecko.com/en/api). Thanks to CoinGecko for providing free crypto price data.
-
 Contributions are very welcome! Feel free to open a pull request ❤️
-
 ---

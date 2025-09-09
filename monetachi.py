@@ -62,7 +62,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c)
 oled.fill(0)
 oled.show()
-font_path = "ubuntu.ttf"
+font_path = "fonts/ubuntu.ttf"
 
 last_fetch = 0
 wallet_lines = []
