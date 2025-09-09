@@ -23,14 +23,16 @@ def token_value(token_id, amount, target_currency="usd"):
     # custom token name
     if token_id.lower() == "shiba-inu":
         token_id = "shiba"
+    if token_id.lower() == "dogecoin":
+        token_id = "doge"
 
     return token_id.capitalize(), total_value, total_value_fmt
 
 def wallet_info(default_currency="jpy"):
     #example
     tokens = [
-        ("shiba-inu", 50),
-        ("doge", 50),
+        ("shiba-inu", 1000),
+        ("dogecoin", 50),
         ("tether", 50)
     ]
 
@@ -38,11 +40,11 @@ def wallet_info(default_currency="jpy"):
     total = 0
     for token_id, amount in tokens:
         name, value, value_fmt = token_value(token_id, amount, default_currency)
-        lines.append(f"{name} value: {value_fmt}")
+        lines.append(f"{name}: {value_fmt}")
         total += value
 
     symbol = currency_symbols.get(default_currency.lower(), "")
-    lines.append(f"Networth: {symbol}{total:,.0f}")
+    lines.append(f"Net: {symbol}{total:,.0f}")
     return lines
 
 def get_ip():
