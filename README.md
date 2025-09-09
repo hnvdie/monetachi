@@ -66,8 +66,7 @@ tokens = [
 ]
 ```
 
-Format: (token_id, amount, currency)
-
+Format: (token_id, amount)
 token_id must match CoinGecko API naming.
 
 
