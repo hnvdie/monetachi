@@ -1,12 +1,16 @@
 from datetime import datetime
+from PIL import Image, ImageDraw, ImageFont
+from modules.blockchain import read_tron as tronscan
+
 import socket
 import board
 import busio
-from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
 import requests
 import time
+import toml
 
+config = toml.load("config.toml")
 currency_symbols = {"usd":"$","idr":"Rp","jpy":"¥","eur":"€"}
 
 def token_value(token_id, amount, target_currency="usd"):
@@ -19,7 +23,7 @@ def token_value(token_id, amount, target_currency="usd"):
     total_value = amount * price
     symbol = currency_symbols.get(target_currency.lower(), "")
     total_value_fmt = f"{symbol}{total_value:,.0f}"
-    
+
     # custom token name
     if token_id.lower() == "shiba-inu":
         token_id = "shiba"
@@ -28,14 +32,38 @@ def token_value(token_id, amount, target_currency="usd"):
 
     return token_id.capitalize(), total_value, total_value_fmt
 
+
 def wallet_info(default_currency="jpy"):
-    #example
+    def merge_tokens(tokens):
+        merged = {}
+        for name, balance in tokens:
+            merged[name] = merged.get(name, 0) + balance
+        return list(merged.items())
+
     tokens = [
         ("shiba-inu", 1000),
         ("dogecoin", 50),
         ("tether", 50)
     ]
 
+    # bad logic need someone for improve code here
+    if config["wallet"]:
+       for data in config["wallet"]:
+           chain = data["chain"]
+
+           if chain.lower() == "tron":
+              for _ in tronscan(data["addr"]):
+                 tokens.append((
+			_["name"],
+			int(_["balance"])),
+			)
+
+           elif chain.lower() == "solana":
+              # underconstruction
+              pass
+           else:pass
+
+    tokens = merge_tokens(tokens)
     lines = []
     total = 0
     for token_id, amount in tokens:
@@ -57,6 +85,8 @@ def get_ip():
     finally:
         s.close()
     return ip
+
+print(wallet_info())
 
 i2c = busio.I2C(board.SCL, board.SDA)
 oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c)

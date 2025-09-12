@@ -1,5 +1,5 @@
 # Monetachi
-![banner](eth-example-jpy.jpg)
+![banner](images/eth-example-jpy.jpg)
 Monetachi is a Raspberry Pi project that shows your **local IP** and **crypto wallet values** on a small OLED display (128x32 / 128x64). Text appears with a fade-in/fade-out effect. Wallet data is fetched from the [CoinGecko API](https://www.coingecko.com/en/api).
 
 ---

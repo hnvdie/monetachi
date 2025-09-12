@@ -1,2 +1,10 @@
-[portofolio]
-tokens = []
+[[wallet]]
+chain = "tron"
+addr = "TKntoronolEXAMPLE"
+
+[[wallet]]
+chain = "solana"
+addr = "BddVgqRdRxQvHu8bEgNTu7NcaeUEEXAMPLE"
+
+[apikey]
+trongrid = "622999XX-2bae-460e-956a-b5EXAMPLE"
