@@ -81,40 +81,51 @@ def get_ip():
         s.close()
     return ip
 
-print(wallet_info())
+def monetachi():
+    i2c = busio.I2C(board.SCL, board.SDA)
+    oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c)
+    oled.fill(0)
+    oled.show()
 
-i2c = busio.I2C(board.SCL, board.SDA)
-oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c)
-oled.fill(0)
-oled.show()
-font_path = "fonts/ubuntu.ttf"
+    font_path = "fonts/ubuntu.ttf"
+    last_fetch = 0
+    wallet_lines = []
 
-last_fetch = 0
-wallet_lines = []
+    while True:
+        if time.time() - last_fetch > 3600:
+            wallet_lines = wallet_info()
+            last_fetch = time.time()
 
-while True:
-    if time.time() - last_fetch > 3600:
-        wallet_lines = wallet_info()
-        last_fetch = time.time()
+        ip = get_ip()
+        messages = [f"Host: {ip}"] + wallet_lines
 
-    ip = get_ip()
-    messages = [f"Host: {ip}"] + wallet_lines
-
-    for msg in messages:
-        font_size = 13
-        font = ImageFont.truetype(font_path, font_size)
-        w, h = font.getsize(msg)
-        while w > oled.width - 4 and font_size > 6:  # padding 2px
-            font_size -= 1
+        for msg in messages:
+            font_size = 13
             font = ImageFont.truetype(font_path, font_size)
             w, h = font.getsize(msg)
-        x = (oled.width - w) // 2
-        y = (oled.height - h) // 2
+            while w > oled.width - 4 and font_size > 6:  # padding 2px
+                font_size -= 1
+                font = ImageFont.truetype(font_path, font_size)
+                w, h = font.getsize(msg)
+            x = (oled.width - w) // 2
+            y = (oled.height - h) // 2
 
-        for brightness in list(range(0, 256, 25)) + list(range(255, -1, -25)):
-            image = Image.new("1", (oled.width, oled.height))
-            draw = ImageDraw.Draw(image)
-            draw.text((x, y), msg, font=font, fill=brightness//128)
-            oled.image(image)
-            oled.show()
-            time.sleep(0.02)
+            for brightness in list(range(0, 256, 25)) + list(range(255, -1, -25)):
+                image = Image.new("1", (oled.width, oled.height))
+                draw = ImageDraw.Draw(image)
+                draw.text((x, y), msg, font=font, fill=brightness // 128)
+                oled.image(image)
+                oled.show()
+                time.sleep(0.02)
+
+def main():
+    while True:
+        try:
+            monetachi()
+        except Exception as e:
+            print(f"[main] error: {e}, retrying...")
+            time.sleep(5)
+            continue
+
+if __name__=="__main__":
+   main()
