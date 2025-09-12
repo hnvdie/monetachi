@@ -1,17 +1,34 @@
+# ===============================
+# Monetachi Config Example
+# ===============================
 
-# add public address for read_only()
+# -------------------------------
+# Public wallets (read-only)
+# -------------------------------
 [[wallet]]
 chain = "tron"
-addr = "TKntoronolEXAMPLE"
+addr  = "TXXXXXXXXXXXXXXXXXXXX1"
+
+[[wallet]]
+chain = "tron"
+addr  = "TXXXXXXXXXXXXXXXXXXXX2"
 
 [[wallet]]
 chain = "solana"
-addr = "BddVgqRdRxQvHu8bEgNTu7NcaeUEEXAMPLE"
+addr  = "BXXXXXXXXXXXXXXXXXXXX3"
 
-[walletOffline] # token_id must match CoinGecko API naming.
-dogecoin = 50
-tether = 50
-shiba-inu = 1000
+# -------------------------------
+# Offline / manual tokens
+# -------------------------------
+[walletOffline]  # token_id must match CoinGecko API naming
+dogecoin    = 50
+tether      = 100
+shiba-inu   = 1000
+usd-coin    = 200
+ethereum    = 1.5
 
+# -------------------------------
+# API Keys (if required)
+# -------------------------------
 [apikey]
-trongrid = "622999XX-2bae-460e-956a-b5EXAMPLE"
+trongrid = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
