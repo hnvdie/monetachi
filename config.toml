@@ -1,3 +1,5 @@
+
+# add public address for read_only()
 [[wallet]]
 chain = "tron"
 addr = "TKntoronolEXAMPLE"
@@ -5,6 +7,11 @@ addr = "TKntoronolEXAMPLE"
 [[wallet]]
 chain = "solana"
 addr = "BddVgqRdRxQvHu8bEgNTu7NcaeUEEXAMPLE"
+
+[walletOffline] # token_id must match CoinGecko API naming.
+dogecoin = 50
+tether = 50
+shiba-inu = 1000
 
 [apikey]
 trongrid = "622999XX-2bae-460e-956a-b5EXAMPLE"
