@@ -34,17 +34,12 @@ def token_value(token_id, amount, target_currency="usd"):
 
 
 def wallet_info(default_currency="jpy"):
+    tokens = list(config["walletOffline"].items())
     def merge_tokens(tokens):
         merged = {}
         for name, balance in tokens:
             merged[name] = merged.get(name, 0) + balance
         return list(merged.items())
-
-    tokens = [
-        ("shiba-inu", 1000),
-        ("dogecoin", 50),
-        ("tether", 50)
-    ]
 
     # bad logic need someone for improve code here
     if config["wallet"]:
