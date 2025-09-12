@@ -53,7 +53,7 @@ Make sure ubuntu.ttf (or another TTF) is available. Adjust path in code if neede
 
 ---
 
-Customization
+## Customization & add coin
 
 Tokens
 
@@ -69,6 +69,14 @@ tokens = [
 Format: (token_id, amount)
 token_id must match CoinGecko API naming.
 
+TOkens scan with blockchain api such trongrid
+using `config.toml` for add assets with input public address of chain:
+
+```bash
+[[wallet]]
+chain = "tron"
+addr = "TKntoronolEXAMPLE"
+```
 
 Custom Names
 
