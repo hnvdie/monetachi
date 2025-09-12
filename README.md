@@ -93,7 +93,7 @@ No code modification needed—everything comes from `config.toml`.
 
 ---
 
-## Example Output (`wallet_info()`)
+## Output `wallet_info()`
 
 If you run `print(wallet_info())` with the above config, you might get:
 
